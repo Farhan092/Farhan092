@@ -1,0 +1,89 @@
+Router 0:
+ 
+en
+conf t
+
+int Fa0/0 
+ip address 192.168.2.1 255.255.252.0
+no shut
+
+int Se0/3/1
+ip address 192.168.10.165 255.255.255.252
+no shut
+
+
+int Se0/3/0
+ip address 192.168.10.161 255.255.255.252
+no shut
+
+
+eigrp:
+
+router:0
+
+router eigrp 1
+network 192.168.10.160  0.0.0.3
+network 192.168.10.164 0.0.0.3
+network 192.168.2.0 0.0.3.255
+no auto-summary
+
+
+
+OSPF:
+
+router ospf 10
+network 192.168.5.128 0.0.0.31 area 0
+network 192.168.5.144 0.0.0.3 area 0
+network 192.168.5.140 0.0.0.3 area 0
+exit
+
+
+vlan 10
+name CSE
+exit 
+
+vlan 20
+name EEE
+exit 
+ 
+
+int fa0/3
+switchport access vlan 10
+exit
+
+int fa0/2
+switchport access vlan 20
+exit
+
+
+int fa0/1
+switchport mode trunk
+exit
+
+interface range fa0/2-3
+switchport mode access
+exit
+
+
+
+
+*** all trunk switch
+
+vlan 10
+name CSE
+exit 
+
+vlan 20
+name EEE
+exit 
+
+
+
+interface range fa0/1-4
+switchport mode trunk
+exit 
+
+
+
+
+
